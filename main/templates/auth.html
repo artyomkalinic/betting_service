@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="/static/auth.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Авторизация</h1>
+        
+        <!-- Форма входа -->
+        <form id="login-form" action="/login" method="post" enctype="application/x-www-form-urlencoded" style="display: none; ">
+        <!-- <form id="login-form" style="display: none;"> -->
+            <label for="username">Логин:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <input type="submit" value="Вход">
+        </form>
+
+        <!-- Форма регистрации -->
+        <form id="registration-form" action="/register" method="post" style="display: none;">
+        <!-- <form id="registration-form" style="display: none;"> -->
+            <label for="reg-login">Логин:</label>
+            <input type="text" id="reglogin" name="reglogin" required>
+            
+            <label for="reg-password">Пароль:</label>
+            <input type="password" id="regpassword" name="regpassword" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <input type="submit" value="Регистрация">
+        </form>
+
+        <!-- Кнопки для переключения форм -->
+        <div class="toggle">
+            <button onclick="showLogin()">Вход</button>
+            <button onclick="showRegistration()">Регистрация</button>
+        </div>
+    </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('registration-form').style.display = 'none';
+        }
+
+        function showRegistration() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('registration-form').style.display = 'block';
+        }
+
+        // Показать форму входа по умолчанию
+        showLogin();
+    </script>
+</body>
+</html>

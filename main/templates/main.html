@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetTyom - Главная страница</title>
+    <link rel="stylesheet" href="/static/style.css">
+   
+</head>
+<body>
+    
+    <!-- Навигационная панель -->
+    <div class="navbar">
+        <a href="/main" class="logo">BetTyom</a>
+        <a href="#" id="line-link">Линия</a>
+        <a href="/results">Результаты</a>
+        <a href="/lk">Личный кабинет</a>
+    </div>
+
+    <!-- Основной контент страницы -->
+    <div class="content">
+        <h1>Добро пожаловать на BetTyom!</h1>
+        <p>Ознакомьтесь с последними событиями, делайте ставки и следите за матчами в режиме реального времени.</p>
+    </div>
+
+    <!-- Панель личного кабинета, скрытая по умолчанию -->
+    <div class="lk-panel" id="lk-panel">
+        <h2>Личный кабинет</h2>
+        <div class="lk-section">
+            <h3>Имя</h3>
+            <p>{{ user_data.username }}</p>
+        </div>
+        <div class="lk-section">
+            <h3>Баланс</h3>
+            <p>{{ user_data.balance }} ₽</p>
+        </div>
+        <div class="lk-section">
+            <h3>Пополнить баланс</h3>
+            <form method="post" action="/add_balance">
+                <label for="balance">Введите сумму:</label>
+                <input type="number" id="added_balance" name="added_balance" min="1" required>
+                <button type="submit">Пополнить</button>    
+            </form>
+        </div>
+        <div class="lk-section">
+            <h3>История ставок</h3>
+            {% if stored_bets %}
+                {% for bet in stored_bets %}
+                    {% if bet[4] == 1 %}
+                        <p>{{ bet[0] }} - {{ bet[1] }} , {{ bet[2] }}, {{ bet[3] }} ₽, win</p>
+                    {% else %}
+                    <p>{{ bet[0] }} - {{ bet[1] }} , {{ bet[2] }}, {{ bet[3] }} ₽, lose</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>You have no stored bets</p>
+            {% endif %}
+        </div>
+        <div class="lk-section">
+            <h3>Текущие ставки</h3>
+            {% if current_bets %}
+                {% for bet in current_bets %}
+                <p>{{ bet[0] }} - {{ bet[1] }} , {{ bet[2] }}, {{ bet[3] }} ₽</p>
+                {% endfor %}
+            {% else %}
+                <p>You have no current bets</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <script>
+        // Функция для отображения панели личного кабинета
+        document.querySelector('.navbar a[href="/lk"]').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('lk-panel').classList.toggle('active');
+        });
+    </script>
+
+    <!-- Раздел "Линия" -->
+    <div id="leagues" class="content">
+        <h2>Линия ставок</h2>
+        <!-- Лига -->
+        <div class="league">
+            <div class="league-header" onclick="toggleMatches(this)">
+                <span>▼</span>
+            </div>
+            <div class="league-matches">
+                {% for match in matches %}
+                <input type="hidden" name="event_id" value="{{ match['event_id'] }}">
+                <div class="match">
+                    <div>{{ match.team1 }} - {{ match.team2 }}</div>
+                    <div class="betting-markets">
+                        <div class="betting-market" onclick="openBetForm('{{ match.team1 }}', '{{ match.team2 }}', 'П1', '{{ match.П1 }}', '{{match.event_id}}')">
+                            <span>П1</span>
+                            <span class="odds">{{match['П1']}}</span>
+                        </div>
+
+                        <div class="betting-market" onclick="openBetForm('{{ match.team1 }}', '{{ match.team2 }}', 'Х', '{{ match.Х }}', '{{match.event_id}}')">
+                            <span>Х</span>
+                            <span class="odds">{{match['Х']}}</span>
+                        </div>
+                       
+                        <div class="betting-market" onclick="openBetForm('{{ match.team1 }}', '{{ match.team2 }}', 'П2', '{{ match.П2 }}', '{{match.event_id}}')">
+                            <span>П2</span>
+                            <span class="odds">{{match['П2']}}</span>
+                        </div>
+
+                        <div class="betting-market" onclick="openBetForm('{{ match.team1 }}', '{{ match.team2 }}', 'ТБ2_5', '{{ match.ТБ2_5 }}', '{{match.event_id}}')">
+                            <span>ТБ2_5</span>
+                            <span class="odds">{{match['ТБ2_5']}}</span>
+                        </div> 
+
+                        <div class="betting-market" onclick="openBetForm('{{ match.team1 }}', '{{ match.team2 }}', 'ТМ2_5', '{{ match.ТМ2_5 }}', '{{match.event_id}}')">
+                            <span>ТМ2_5</span>
+                            <span class="odds">{{match['ТМ2_5']}}</span>
+                        </div> 
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Переписать форму для передачи данных матча как в authentification -->
+    <!-- Форма для оформления ставки -->
+    <div id="bet-form-container" style="display: none;">
+        <form id="bet-form" action="/add_bet" method="POST">
+            <h3>Оформление ставки</h3>
+            <label for="event">Событие:</label>
+            <input type="text" id="event" name="event" readonly>
+            
+            <label for="odds">Коэффициент:</label>
+            <input type="text" id="coeff_val" name="coeff_val" readonly>
+            
+            <label for="amount">Сумма ставки:</label>
+            <input type="number" id="sum" name="sum" min="1" required>
+
+            <input type="hidden" id="event_id" name="event_id">
+
+            <input type="hidden" id="market" name="market">
+
+            <p id="error-message" style="color: red; display: none;">Недостаточно средств</p>
+            
+            <button type="submit">Подтвердить</button>
+            <button type="button" onclick="closeBetForm()">Отмена</button>
+        </form>
+        <script>
+            var userBalance = parseInt(user_data.balance, 10);  // Баланс пользователя
+        
+            function checkBalance() {
+                var sum = document.getElementById('sum').value;
+                var errorMessage = document.getElementById('error-message');
+                var submitButton = document.getElementById('submit-btn');
+                
+                if (sum > userBalance) {
+                    errorMessage.style.display = 'block';
+                    submitButton.disabled = true;
+                } else {
+                    errorMessage.style.display = 'none';
+                    submitButton.disabled = false;
+                }
+            }
+        </script>
+    </div>
+    <script>
+        // Функция для открытия формы ставки
+        function openBetForm(team1, team2, market, coeff_val, event_id) {
+
+            const betFormContainer = document.getElementById('bet-form-container');
+            const eventField = document.getElementById('event');
+            const oddsField = document.getElementById('coeff_val');
+            const eventIdField = document.getElementById('event_id');
+            const marketNameField = document.getElementById('market');
+    
+            // Устанавливаем данные события и коэффициента
+            eventField.value = `${team1} - ${team2} (${market})`;
+            oddsField.value = coeff_val;
+            eventIdField.value = event_id;
+            marketNameField.value = market;
+            // Показываем форму
+            betFormContainer.style.display = 'block';
+        }
+    
+        // Функция для закрытия формы ставки
+        function closeBetForm() {
+            const betFormContainer = document.getElementById('bet-form-container');
+            betFormContainer.style.display = 'none';
+        }
+    </script>
+
+    <script>
+        // Показать раздел "Линия" при нажатии на ссылку
+        document.getElementById('line-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            const leaguesSection = document.getElementById('leagues');
+            leaguesSection.style.display = leaguesSection.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Функция для скрытия/показа матчей
+        function toggleMatches(header) {
+            const matches = header.nextElementSibling;
+            matches.style.display = matches.style.display === "block" ? "none" : "block";
+        }
+    </script>
+
+</body>
+</html>

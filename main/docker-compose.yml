@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14.8-alpine3.18
+    environment:
+      POSTGRES_DB: "bettyom"
+      POSTGRES_USER: "artyom"
+      POSTGRES_PASSWORD: "1234"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - bettyom-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  fastapi:
+    build: ./  
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app 
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+volumes:
+  sql:
+  bettyom-data:

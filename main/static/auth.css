@@ -1,0 +1,54 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e8f5e9; /* Светло-зеленый фон */
+    font-family: Arial, sans-serif;
+}
+.container {
+    background-color: #4caf50; /* Зеленый */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+h1 {
+    text-align: center;
+    color: #fff; /* Белый текст */
+}
+label {
+    color: #fff; /* Белый текст */
+    margin-bottom: 5px;
+    display: block;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+}
+input[type="submit"] {
+    background-color: #388e3c; /* Темно-зеленый */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+input[type="submit"]:hover {
+    background-color: #2e7d32; /* Темно-зеленый при наведении */
+}
+.toggle {
+    margin-top: 10px;
+    text-align: center;
+}
+.toggle a {
+    color: #fff; /* Белый текст */
+    text-decoration: underline;
+    cursor: pointer;
+}

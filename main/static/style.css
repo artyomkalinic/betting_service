@@ -1,0 +1,127 @@
+body {
+    background-color: #e8f5e9; /* Светло-зеленый фон */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background-color: #4caf50; /* Зеленый фон */
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    position: fixed; /* Фиксируем панель навигации */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001; /* Панель навигации всегда сверху */
+}
+.navbar a {
+    color: #fff; /* Белый текст */
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 18px;
+}
+.navbar a:hover {
+    color: #c8e6c9; /* Светло-зеленый при наведении */
+}
+.navbar .logo {
+    font-weight: bold;
+    font-size: 24px;
+    margin-right: auto; /* Отодвинуть ссылки вправо */
+}
+.content {
+    padding: 20px;
+    text-align: center;
+    margin-top: 80px; /* Добавляем отступ, чтобы контент не перекрывался панелью навигации */
+}
+.content h1 {
+    color: #388e3c; /* Темно-зеленый */
+    font-size: 36px;
+}
+.content p {
+    font-size: 18px;
+    color: #4caf50;
+}
+
+/* Панель личного кабинета */
+.lk-panel {
+    position: fixed;
+    top: 58px; /* Сдвигаем панель вниз, чтобы она не перекрывала панель навигации */
+    right: -20%; /* Панель скрыта за пределами экрана справа */
+    width: 20%;
+    height: calc(100% - 80px); /* Оставляем высоту панели от нижней части навигации */
+    background-color: #ffffff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: none;
+    transition: transform 0.3s ease;
+    z-index: 1000; /* Панель личного кабинета ниже панели навигации */
+}
+
+/* Когда панель активна, она сдвигается в пределах экрана */
+.lk-panel.active {
+    right: 0; /* Панель появляется справа */
+    display: block;
+}
+
+.lk-section {
+    margin-bottom: 20px;
+}
+
+.lk-section h3 {
+    color: #388e3c; /* Темно-зеленый */
+    font-size: 22px;
+}
+
+.lk-section p {
+    font-size: 18px;
+    color: #4caf50;
+}
+
+
+
+#leagues {
+    display: none; 
+}
+.league {
+    margin: 20px 0;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+    background-color: #e8f5e9;
+}
+.league-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+}
+.league-matches {
+    display: none;
+    padding: 10px;
+}
+.match {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+.betting-markets {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+.betting-market {
+    text-align: center;
+    width: 18%;
+}
+.betting-market span {
+    display: block;
+    font-size: 14px;
+}
+.betting-market .odds {
+    font-weight: bold;
+    color: #388e3c;
+}
